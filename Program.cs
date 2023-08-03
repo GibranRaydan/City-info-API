@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.StaticFiles;
+using CityInfo.API.DbContexts;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
+
+builder.Services.AddDbContext<CityInfoContext>(
+    dbContextOptions => dbContextOptions.UseSqlite("Data Source=CityInfo.db"));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

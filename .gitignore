@@ -615,3 +615,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,aspnetcore,windows,macos,linux,visualstudiocode,dotnetcore
+CityInfo.db

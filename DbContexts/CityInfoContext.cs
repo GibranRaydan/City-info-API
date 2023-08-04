@@ -61,6 +61,12 @@ public class CityInfoContext : DbContext
                     Id = 4,
                     Description = "Playa para correr",
                     CityId = 3
+                },
+                new PointOfInterest("Costa Azul")
+                {
+                    Id = 5,
+                    Description = "Residencia",
+                    CityId = 3
                 }
             );
         base.OnModelCreating(modelBuilder);

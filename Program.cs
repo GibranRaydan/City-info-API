@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.StaticFiles;
 using CityInfo.API.DbContexts;
 using Microsoft.EntityFrameworkCore;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Env.Load();
+string db = Environment.GetEnvironmentVariable("DB");
 
 // Add services to the container.
 
@@ -17,9 +21,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
 builder.Services.AddDbContext<CityInfoContext>(
-    dbContextOptions => dbContextOptions.UseSqlite(
-        builder.Configuration["ConnectionStrings:CityInfoDBConnectionString"]
-    ));
+    dbContextOptions => dbContextOptions.UseSqlite(db));
 
 var app = builder.Build();
 

@@ -4,6 +4,7 @@ using CityInfo.API.Services;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using DotNetEnv;
 
 // serial loggin configuration with Serilog
 Log.Logger = new LoggerConfiguration()
@@ -15,6 +16,9 @@ Log.Logger = new LoggerConfiguration()
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseSerilog();
+
+Env.Load();
+string db = Environment.GetEnvironmentVariable("DB");
 
 // Add services to the container.
 
@@ -38,7 +42,7 @@ builder.Services.AddTransient<IMailService, CloudMailService>();
 builder.Services.AddSingleton<CitiesDataStore>();
 
 builder.Services.AddDbContext<CityInfoContext>(
-    dbContextOptions => dbContextOptions.UseSqlite("Data Source=CityInfo.db"));
+    dbContextOptions => dbContextOptions.UseSqlite(db));
 
 var app = builder.Build();
 

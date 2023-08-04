@@ -2,6 +2,7 @@
 using CityInfo.API.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityInfo.API.Migrations
 {
     [DbContext(typeof(CityInfoContext))]
-    partial class CityInfoContextModelSnapshot : ModelSnapshot
+    [Migration("20230804002610_DataSeed2")]
+    partial class DataSeed2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.9");
@@ -66,6 +69,7 @@ namespace CityInfo.API.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
@@ -120,13 +124,13 @@ namespace CityInfo.API.Migrations
 
             modelBuilder.Entity("CityInfo.API.Entities.PointOfInterest", b =>
                 {
-                    b.HasOne("CityInfo.API.Entities.City", "city")
+                    b.HasOne("CityInfo.API.Entities.City", "City")
                         .WithMany("PointsOfInterest")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("city");
+                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("CityInfo.API.Entities.City", b =>

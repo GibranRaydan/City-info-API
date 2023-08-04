@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityInfo.API.Migrations
 {
     [DbContext(typeof(CityInfoContext))]
-    [Migration("20230803161655_CityInfoDBInitialMigration")]
-    partial class CityInfoDBInitialMigration
+    [Migration("20230803232124_DataSeed")]
+    partial class DataSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,26 @@ namespace CityInfo.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Una ciudad asquerosa",
+                            Name = "Caracas"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Está muy alta y hay montañas",
+                            Name = "Bogotá"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Hace calor",
+                            Name = "Porlamar"
+                        });
                 });
 
             modelBuilder.Entity("CityInfo.API.Entities.PointOfInterest", b =>
@@ -48,6 +68,11 @@ namespace CityInfo.API.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -58,17 +83,47 @@ namespace CityInfo.API.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("PointOfInterest");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CityId = 1,
+                            Description = "Te van a robar",
+                            Name = "Petare"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CityId = 1,
+                            Description = "Es muy feo",
+                            Name = "El Centro "
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CityId = 2,
+                            Description = "Te roban pero en colombiano",
+                            Name = "El Sur"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CityId = 3,
+                            Description = "Playa para correr",
+                            Name = "La Caracola"
+                        });
                 });
 
             modelBuilder.Entity("CityInfo.API.Entities.PointOfInterest", b =>
                 {
-                    b.HasOne("CityInfo.API.Entities.City", "city")
+                    b.HasOne("CityInfo.API.Entities.City", "City")
                         .WithMany("PointsOfInterest")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("city");
+                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("CityInfo.API.Entities.City", b =>

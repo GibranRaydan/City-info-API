@@ -13,9 +13,6 @@ public class PointOfInterestController : ControllerBase
     private readonly IMailService _mailService;
     private readonly IMapper _mapper;
     private readonly ICityInfoRepository _cityInfoRepository;
-    private readonly CitiesDataStore _citiesDataStore;
-
-
 
     public PointOfInterestController(ILogger<PointOfInterestController> logger,
     IMailService mailService,

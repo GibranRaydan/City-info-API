@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog();
 
 Env.Load();
-string db = Environment.GetEnvironmentVariable("DB");
+string? db = Environment.GetEnvironmentVariable("DB");
 
 // Add services to the container.
 
@@ -43,6 +43,10 @@ builder.Services.AddSingleton<CitiesDataStore>();
 
 builder.Services.AddDbContext<CityInfoContext>(
     dbContextOptions => dbContextOptions.UseSqlite(db));
+
+builder.Services.AddScoped<ICityInfoRepository, CityInfoRepository>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

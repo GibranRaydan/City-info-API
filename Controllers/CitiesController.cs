@@ -22,7 +22,8 @@ public class CitiesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<CityWithoutPointOfInterestDto>>> GetCities()
+    public async Task<ActionResult<IEnumerable<CityWithoutPointOfInterestDto>>> GetCities(
+        [FromQuery] string? name)
     {
         var cityEntities = await _cityInfoRepository.GetCitiesAsync();
         return Ok(_mapper.Map<IEnumerable<CityWithoutPointOfInterestDto>>(cityEntities));

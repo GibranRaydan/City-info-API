@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityInfo.API.Migrations
 {
     [DbContext(typeof(CityInfoContext))]
-    [Migration("20230803165602_CityInfoDBAddPointOfInterestDescription")]
-    partial class CityInfoDBAddPointOfInterestDescription
+    [Migration("20230803161651_CityInfoDBInitialMigration")]
+    partial class CityInfoDBInitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,10 +48,6 @@ namespace CityInfo.API.Migrations
                     b.Property<int>("CityId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -66,13 +62,13 @@ namespace CityInfo.API.Migrations
 
             modelBuilder.Entity("CityInfo.API.Entities.PointOfInterest", b =>
                 {
-                    b.HasOne("CityInfo.API.Entities.City", "city")
+                    b.HasOne("CityInfo.API.Entities.City", "City")
                         .WithMany("PointsOfInterest")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("city");
+                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("CityInfo.API.Entities.City", b =>

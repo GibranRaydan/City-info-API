@@ -15,7 +15,8 @@ namespace CityInfo.API.Migrations
                 table: "PointOfInterest",
                 type: "TEXT",
                 maxLength: 200,
-                nullable: true);
+                nullable: false,
+                defaultValue: "");
         }
 
         /// <inheritdoc />

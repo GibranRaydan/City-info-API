@@ -7,6 +7,8 @@ using Serilog;
 using DotNetEnv;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 
 // serial loggin configuration with Serilog
 Log.Logger = new LoggerConfiguration()
@@ -31,7 +33,29 @@ builder.Services.AddControllers(options =>
 .AddXmlDataContractSerializerFormatters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(setupAction =>
+{
+    setupAction.AddSecurityDefinition("CityInfoApiBearerAuth", new OpenApiSecurityScheme()
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        Description = "Input a valid token to access this Api"
+    });
+    setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "CityInfoApiBearerAuth"
+                }
+            }, new List<string>()
+        }
+    });
+
+});
 
 builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
 
@@ -50,7 +74,7 @@ builder.Services.AddScoped<ICityInfoRepository, CityInfoRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddAuthentication("Bearer").AddJwtBearer(options => 
+builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new()
             {
@@ -64,6 +88,13 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
                 )
             };
         });
+
+builder.Services.AddApiVersioning(setupAction =>
+{
+    setupAction.AssumeDefaultVersionWhenUnspecified = true;
+    setupAction.DefaultApiVersion = new ApiVersion(1, 0);
+    setupAction.ReportApiVersions = true;
+});
 
 var app = builder.Build();
 

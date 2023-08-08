@@ -7,12 +7,10 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace CityInfo.API.Controllers;
 
-
 public class CityInfoUser
 {
     public int UserId { get; set; }
     public string Username { get; set; }
-
     public string Password { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -52,7 +50,6 @@ public class AuthenticationController : ControllerBase
     }
 
 
-
     [HttpPost("authenticate")]
     public ActionResult<string> Authenticate(
         AuthenticationRequestBody authenticationRequestBody)
@@ -86,13 +83,12 @@ public class AuthenticationController : ControllerBase
             DateTime.UtcNow,
             DateTime.UtcNow.AddHours(1),
             signingCredentials);
-        
+
         var tokenToReturn = new JwtSecurityTokenHandler()
             .WriteToken(jwtSecurityToken);
 
         return Ok(tokenToReturn);
     }
-
 
     private CityInfoUser ValidateUserCredentials(string? userName, string? password)
     {
@@ -103,11 +99,6 @@ public class AuthenticationController : ControllerBase
             "Raydan",
             "Porlamar");
     }
-
-
-
-
-
 }
 
 

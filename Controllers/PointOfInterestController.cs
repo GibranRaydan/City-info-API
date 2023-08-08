@@ -9,7 +9,8 @@ namespace CityInfo.API.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("api/cities/{cityId}/pointsofinterest/")]
+[ApiVersion("2.0")]
+[Route("api/v{version:apiVersion}/cities/{cityId}/pointsofinterest/")]
 public class PointOfInterestController : ControllerBase
 {
     private readonly ILogger<PointOfInterestController> _logger;
@@ -32,7 +33,9 @@ public class PointOfInterestController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PointOfInterestDto>>> GetPointsOfInterest(int cityId)
-    {
+    {   
+        // var cityName = User.Claims.FirstOrDefault(c => c.Type == "city")?.Value;
+ 
         var cityExist = await _cityInfoRepository.CityExistAsync(cityId);
 
         if (!cityExist)
